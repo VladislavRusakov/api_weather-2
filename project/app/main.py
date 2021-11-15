@@ -5,7 +5,7 @@ from sqlmodel import Session
 
 from .db import get_session, init_db
 from .models import Weather, WeatherCreate
-from .data import get_data_from_weather_api
+from .data import get_data_from_weather_api, post_request_sender
 
 
 app = FastAPI()
@@ -31,6 +31,7 @@ def data_from_frontend_form(city: str = Form(...)):
     try:
         response = get_data_from_weather_api(city)
         print(response)
+        post_request_sender(response)
         return Response(json.dumps(response), media_type='text/html')
     except KeyError:
         return Response("<h1>Incorrect city name</h1>", media_type='text/html')
@@ -42,6 +43,7 @@ def api_response(city: str):
     try:
         response = get_data_from_weather_api(city)
         print(response)
+        post_request_sender(response)
         return Response(json.dumps(response), media_type='text/html')
     except KeyError:
         return Response("<h1>Incorrect city name</h1>", media_type='text/html')
