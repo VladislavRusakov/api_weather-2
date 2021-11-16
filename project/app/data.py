@@ -60,21 +60,25 @@ def post_request_sender(data: dict) -> dict:
     req1 = {}
     req2 = {}
 
-    req1["source"] = "openweathermap"
-    req1["city"] = data["openweathermap"]["name"]
-    req1["temp"] = data["openweathermap"]["temperature"]
-    req1["timezone"] = data["openweathermap"]["timezone"]
-    req1["lon"] = data["openweathermap"]["lon"]
-    req1["lat"] = data["openweathermap"]["lat"]
-    req1["request"] = "http://localhost:8000/api/" + data["openweathermap"]["name"]
+    src = data["openweathermap"]
+    req1 = {"source": "openweathermap",
+            "city": src["name"],
+            "temp": src["temperature"],
+            "timezone": src["timezone"],
+            "lon": src["lon"],
+            "lat": src["lat"],
+            "request": "http://localhost:8000/api/" + src["name"]
+            }
 
-    req2["source"] = "weatherbit"
-    req2["city"] = data["weatherbit"]["name"]
-    req2["temp"] = data["weatherbit"]["temperature"]
-    req2["timezone"] = data["weatherbit"]["timezone"]
-    req2["lon"] = data["weatherbit"]["lon"]
-    req2["lat"] = data["weatherbit"]["lat"]
-    req2["request"] = "http://localhost:8000/api/" + data["weatherbit"]["name"]
+    src = data["weatherbit"]
+    req2 = {"source": "weatherbit",
+            "city": src["name"],
+            "temp": src["temperature"],
+            "timezone": src["timezone"],
+            "lon": src["lon"],
+            "lat": src["lat"],
+            "request": "http://localhost:8000/api/" + src["name"]
+            }
 
     requests.post('http://localhost:8000/db', data=json.dumps(req1))
     requests.post('http://localhost:8000/db', data=json.dumps(req2))
