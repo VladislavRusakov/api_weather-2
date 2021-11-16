@@ -2,6 +2,7 @@ import json
 from fastapi import FastAPI, Response, Form, Depends
 from sqlalchemy import select
 from sqlmodel import Session
+from sqlalchemy.orm.exc import NoResultFound
 
 from .db import get_session, init_db
 from .models import Weather, WeatherCreate
@@ -81,3 +82,26 @@ def add_request(req: WeatherCreate, session: Session = Depends(get_session)):
     session.commit()
     session.refresh(req)
     return req
+
+
+@app.get("/db/del/{index}", response_model=list[Weather])
+def delete_row(index: int, session: Session = Depends(get_session)):
+    try:
+        row = session.query(Weather).filter(Weather.id == index).one()
+
+        if index % 2 == 0:
+            connected_row = session.query(Weather).filter(
+                Weather.id == index - 1).one()
+        else:
+            connected_row = session.query(Weather).filter(
+                Weather.id == index + 1).one()
+
+        session.delete(row)
+        session.delete(connected_row)
+        session.commit()
+
+    except NoResultFound:
+        return Response(
+            f"<h1>Index {index} not found</h1>", media_type='text/html')
+
+    return index_page()
