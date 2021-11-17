@@ -63,6 +63,7 @@ def get_songs(session: Session = Depends(get_session)):
         lon=req.lon,
         lat=req.lat,
         request=req.request,
+        datetime=req.datetime,
         id=req.id)
             for req in requests]
 
@@ -77,7 +78,8 @@ def add_request(req: WeatherCreate, session: Session = Depends(get_session)):
             timezone=req.timezone,
             lon=req.lon,
             lat=req.lat,
-            request=req.request)
+            request=req.request,
+            datetime=req.datetime)
     session.add(req)
     session.commit()
     session.refresh(req)

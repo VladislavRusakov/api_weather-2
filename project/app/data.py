@@ -3,7 +3,7 @@ import os
 from typing import Dict
 import dotenv
 import json
-
+import datetime
 
 dotenv.load_dotenv('.env')
 API_KEY = os.environ['OPENWEATHERMAP_API_KEY']
@@ -59,6 +59,7 @@ def get_data_from_weather_api(
 def post_request_sender(data: dict) -> dict:
     req1 = {}
     req2 = {}
+    time = datetime.datetime.now().strftime("%Y-%m-%d.%H:%M")
 
     src = data["openweathermap"]
     req1 = {"source": "openweathermap",
@@ -67,7 +68,8 @@ def post_request_sender(data: dict) -> dict:
             "timezone": src["timezone"],
             "lon": src["lon"],
             "lat": src["lat"],
-            "request": "http://localhost:8000/api/" + src["name"]
+            "request": "http://localhost:8000/api/" + src["name"],
+            "datetime": time
             }
 
     src = data["weatherbit"]
@@ -77,7 +79,8 @@ def post_request_sender(data: dict) -> dict:
             "timezone": src["timezone"],
             "lon": src["lon"],
             "lat": src["lat"],
-            "request": "http://localhost:8000/api/" + src["name"]
+            "request": "http://localhost:8000/api/" + src["name"],
+            "datetime": time
             }
 
     requests.post('http://localhost:8000/db', data=json.dumps(req1))

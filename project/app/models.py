@@ -9,6 +9,7 @@ class WeatherBase(SQLModel):
     lon: str
     lat: str
     request: str
+    datetime: str
 
 
 class Weather(WeatherBase, table=True):
