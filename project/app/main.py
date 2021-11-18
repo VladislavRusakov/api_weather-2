@@ -1,8 +1,8 @@
 import json
 from fastapi import FastAPI, Response, Form, Depends
-from sqlalchemy import select
-from sqlmodel import Session
+from sqlalchemy.future import select
 from sqlalchemy.orm.exc import NoResultFound
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from .db import get_session, init_db
 from .models import Weather, WeatherCreate
@@ -13,9 +13,9 @@ app = FastAPI()
 
 
 @app.on_event("startup")
-def on_startup():
+async def on_startup():
     """Создаёт таблицу в базе данных при запуске приложения"""
-    init_db()
+    await init_db()
 
 
 @app.get("/")
@@ -51,9 +51,9 @@ def api_response(city: str):
 
 
 @app.get("/db", response_model=list[Weather])
-def get_songs(session: Session = Depends(get_session)):
+async def get_db(session: AsyncSession = Depends(get_session)):
     """Получить данные из БД"""
-    result = session.execute(select(Weather))
+    result = await session.execute(select(Weather))
     requests = result.scalars().all()
     return [Weather(
         source=req.source,
@@ -69,7 +69,8 @@ def get_songs(session: Session = Depends(get_session)):
 
 
 @app.post("/db")
-def add_request(req: WeatherCreate, session: Session = Depends(get_session)):
+async def add_request(req: WeatherCreate,
+                      session: AsyncSession = Depends(get_session)):
     """Добавляет запрос в базу данных"""
     req = Weather(
             source=req.source,
@@ -81,29 +82,29 @@ def add_request(req: WeatherCreate, session: Session = Depends(get_session)):
             request=req.request,
             datetime=req.datetime)
     session.add(req)
-    session.commit()
+    await session.commit()
     session.refresh(req)
     return req
 
 
 @app.get("/db/del/{index}", response_model=list[Weather])
-def delete_row(index: int, session: Session = Depends(get_session)):
-    try:
-        row = session.query(Weather).filter(Weather.id == index).one()
+async def delete_row(index: int, session: AsyncSession = Depends(get_session)):
+    """Позволяет удалять записи из БД"""
+    row = await session.execute(select(
+        Weather).where(Weather.id == index))
+    row = row.scalar_one()
 
-        if index % 2 == 0:
-            connected_row = session.query(Weather).filter(
-                Weather.id == index - 1).one()
-        else:
-            connected_row = session.query(Weather).filter(
-                Weather.id == index + 1).one()
+    if index % 2 == 0:
+        sub_row = await session.execute(select(
+            Weather).where(Weather.id == index - 1))
+        sub_row = sub_row.scalar_one()
+    else:
+        sub_row = await session.execute(select(
+            Weather).where(Weather.id == index + 1))
+        sub_row = sub_row.scalar_one()
 
-        session.delete(row)
-        session.delete(connected_row)
-        session.commit()
-
-    except NoResultFound:
-        return Response(
-            f"<h1>Index {index} not found</h1>", media_type='text/html')
+    await session.delete(row)
+    await session.delete(sub_row)
+    await session.commit()
 
     return index_page()
