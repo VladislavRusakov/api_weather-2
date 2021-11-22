@@ -1,7 +1,6 @@
 import json
 from fastapi import FastAPI, Response, Form, Depends
 from sqlalchemy.future import select
-from sqlalchemy.orm.exc import NoResultFound
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from .db import get_session, init_db
@@ -16,6 +15,12 @@ app = FastAPI()
 async def on_startup():
     """Создаёт таблицу в базе данных при запуске приложения"""
     await init_db()
+
+
+@app.get("/ping")
+async def pong():
+    """"""
+    return {"ping": "pong!"}
 
 
 @app.get("/")
