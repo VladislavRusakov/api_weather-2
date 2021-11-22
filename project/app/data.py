@@ -57,6 +57,7 @@ def get_data_from_weather_api(
 
 
 def post_request_sender(data: dict) -> dict:
+    """"""
     req1 = {}
     req2 = {}
     time = datetime.datetime.now().strftime("%Y-%m-%d.%H:%M")
