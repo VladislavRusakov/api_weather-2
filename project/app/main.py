@@ -2,6 +2,7 @@ import json
 from fastapi import FastAPI, Response, Form, Depends
 from sqlalchemy.future import select
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.exc import NoResultFound
 
 from .db import get_session, init_db
 from .models import Weather, WeatherCreate
@@ -94,19 +95,23 @@ async def add_request(req: WeatherCreate,
 
 @app.get("/db/del/{index}", response_model=list[Weather])
 async def delete_row(index: int, session: AsyncSession = Depends(get_session)):
-    """Позволяет удалять записи из БД"""
-    row = await session.execute(select(
-        Weather).where(Weather.id == index))
-    row = row.scalar_one()
+    """Позволяет удалять записи из БД по индексу"""
+    try:
+        row = await session.execute(select(
+            Weather).where(Weather.id == index))
+        row = row.scalar_one()
 
-    if index % 2 == 0:
-        sub_row = await session.execute(select(
-            Weather).where(Weather.id == index - 1))
-        sub_row = sub_row.scalar_one()
-    else:
-        sub_row = await session.execute(select(
-            Weather).where(Weather.id == index + 1))
-        sub_row = sub_row.scalar_one()
+        if index % 2 == 0:
+            sub_row = await session.execute(select(
+                Weather).where(Weather.id == index - 1))
+            sub_row = sub_row.scalar_one()
+        else:
+            sub_row = await session.execute(select(
+                Weather).where(Weather.id == index + 1))
+            sub_row = sub_row.scalar_one()
+
+    except NoResultFound:
+        return Response("<h1>Index not found</h1>", media_type='text/html')
 
     await session.delete(row)
     await session.delete(sub_row)
