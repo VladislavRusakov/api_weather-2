@@ -12,8 +12,8 @@ services:
 
     environment:
       - DATABASE_URL=postgresql+asyncpg://postgres:postgres@db:5432/foo
-      - OPENWEATHERMAP_API_KEY=aa932aa2a7b8bea650af8afec692e67e
-      - WEATHERBIT_API_KEY=9988561577c3409693161c0cf240ca6d
+      - OPENWEATHERMAP_API_KEY=YOUR_KEY
+      - WEATHERBIT_API_KEY=YOUR_KEY
       - TZ=Europe/Moscow 
     depends_on:
       - db
