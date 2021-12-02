@@ -94,7 +94,8 @@ async def add_request(req: WeatherCreate,
 
 
 @app.get("/db/del/{index}", response_model=list[Weather])
-async def delete_row(index: int, session: AsyncSession = Depends(get_session)):
+async def delete_row(index: int,
+                     session: AsyncSession = Depends(get_session)):
     """Позволяет удалять записи из БД по индексу"""
     try:
         row = await session.execute(select(

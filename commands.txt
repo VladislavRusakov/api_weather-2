@@ -5,4 +5,6 @@
 Сборка - docker-compose up -d --build
 Удаление - docker-compose down -v
 
-Ссылка: https://api.openweathermap.org/data/2.5/weather?q=moscow&appid=aa932aa2a7b8bea650af8afec692e67e&units=metric
+Ссылки: 
+https://api.openweathermap.org/data/2.5/weather?q=moscow&appid=aa932aa2a7b8bea650af8afec692e67e&units=metric
+https://api.weatherbit.io/v2.0/current?city=moscow&key=9988561577c3409693161c0cf240ca6d
