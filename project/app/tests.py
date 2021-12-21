@@ -1,43 +1,6 @@
 from data import get_data_from_weather_api
 import requests
-import itertools
-import threading
-import time
-import sys
-
-
-def loading(function):
-    def wrapper():
-        done = False
-
-        def animate():
-            """Animated ASCII loading in termminal"""
-            SPEED = 1  # Int 1 - 10
-            LINE = '\rLoading '
-
-            frames = [
-                ["⡏ ", "⡗ ", "⡧ ", "⣇ ", "⣸ ", "⢼ ", "⢺ ", "⢹ "],
-                ['bq', 'dp', 'qb', 'pd'],
-                ['bo', 'do', 'ob', 'od', 'oq', 'op', 'qo', 'po'],
-                ["⣷", "⣯", "⣟", "⡿", "⢿", "⣻", "⣽", "⣾"],
-            ]
-
-            for frame in itertools.cycle(frames[0]):
-
-                if done:
-                    break
-                sys.stdout.write(LINE + frame)
-                sys.stdout.flush()
-                time.sleep(1 / SPEED / 10)
-            sys.stdout.write('\rDone!' + ' ' * (len(LINE) + 2))
-
-        thread = threading.Thread(target=animate)
-        thread.start()
-
-        function()
-
-        done = True
-    return wrapper
+from animation.loading import loading
 
 
 def test_response_get_data_from_weather_api():

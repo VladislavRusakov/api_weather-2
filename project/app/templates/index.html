@@ -51,12 +51,19 @@
     <div class="placeholder"></div>
     
     <form method="post" action="/api" enctype="multipart/form-data">
-    <input type="text" name="city" />
+    <input type="text" list="city-suggestion" name="city" placeholder="City" />
+        
 
     <input type="submit" class='grid-item' value="Enter" />
     </form>
     
     <div class="placeholder"></div>
 
+
+    <datalist id="city-suggestion">
+        <option>Moscow</option>
+        <option>Saint Petersburg</option>
+        <option>Saratov</option>
+        <option>Derbent</option>
 </body>
 </html>
