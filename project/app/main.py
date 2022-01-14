@@ -1,8 +1,11 @@
 import json
-from fastapi import FastAPI, Response, Form, Depends
+from fastapi import FastAPI, Response, Form, Depends, Request
+from starlette.responses import FileResponse
 from sqlalchemy.future import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.exc import NoResultFound
+from fastapi.responses import HTMLResponse
+from fastapi.templating import Jinja2Templates
 
 from .db import get_session, init_db
 from .models import Weather, WeatherCreate
@@ -10,6 +13,14 @@ from .data import get_data_from_weather_api, post_request_sender
 
 
 app = FastAPI()
+TEMPLATES = Jinja2Templates(directory="app/templates")
+FAVICON_PATH = './app/templates/favicon.ico'
+
+
+@app.get('/favicon.ico')
+async def favicon():
+    """Фавиконка"""
+    return FileResponse(FAVICON_PATH)
 
 
 @app.on_event("startup")
@@ -20,7 +31,7 @@ async def on_startup():
 
 @app.get("/ping")
 async def pong():
-    """"""
+    """Пинг - понг!"""
     return {"ping": "pong!"}
 
 
@@ -32,14 +43,19 @@ def index_page():
     return Response(index_page, media_type='text/html')
 
 
-@app.post("/api")
-def data_from_frontend_form(city: str = Form(...)):
+@app.post("/api", response_class=HTMLResponse)
+def data_from_frontend_form(request: Request, city: str = Form(...)):
     """Позволяет получить данные с помощью запроса из формы"""
     try:
         response = get_data_from_weather_api(city)
         print(response)
         post_request_sender(response)
-        return Response(json.dumps(response), media_type='text/html')
+
+        return TEMPLATES.TemplateResponse("weather.html", {
+            "request": request,
+            "response": response
+        })
+
     except KeyError:
         return Response("<h1>Incorrect city name</h1>", media_type='text/html')
 

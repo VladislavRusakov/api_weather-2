@@ -1,0 +1,45 @@
+<html>
+  <head>
+    {% include 'style.html' %}
+  </head>
+
+
+<body>
+  <div id="background-wrap">
+    <div class="x1">
+        <div class="cloud"></div>
+    </div>
+
+    <div class="x2">
+        <div class="cloud"></div>
+    </div>
+
+    <div class="x3">
+        <div class="cloud"></div>
+    </div>
+
+    <div class="x4">
+        <div class="cloud"></div>
+    </div>
+
+    <div class="x5">
+        <div class="cloud"></div>
+    </div>
+</div>
+
+<div class="text-container">
+
+  {% for item in response["openweathermap"] %}
+  <h2>{{ item | capitalize }}: {{ response["openweathermap"][item] }}</h2>
+  {% endfor %}
+
+</div>
+
+<div class="text-container">
+  {% for item in response["weatherbit"] %}
+  <h2>{{ item | capitalize }}: {{ response["weatherbit"][item] }}</h2>
+  {% endfor %}
+</div>
+
+</body>
+</html>
