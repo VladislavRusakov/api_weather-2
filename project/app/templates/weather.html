@@ -1,11 +1,18 @@
 <html>
   <head>
+
       {% if response["openweathermap"]["weather"] == "Snow" %}
         {% include 'style_snow.html' %}
-      {% elif response["openweathermap"]["weather"] == "Rain" or "Drizzle" %}
+
+      {% elif response["openweathermap"]["weather"] == "Rain" or response["openweathermap"]["weather"] == "Drizzle" %}
         {% include 'style_rain.html' %}
+
+      {% elif response["openweathermap"]["weather"] == "Thunderstorm" %}
+        {% include 'style_thunderstorm.html' %}
+
       {% else %}
         {% include 'style_clouds.html' %}
+        
       {% endif %}
   
 
