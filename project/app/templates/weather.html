@@ -1,43 +1,31 @@
 <html>
   <head>
-    {% include 'style.html' %}
-  </head>
-
-
-<body>
-  <div id="background-wrap">
-    <div class="x1">
-        <div class="cloud"></div>
-    </div>
-
-    <div class="x2">
-        <div class="cloud"></div>
-    </div>
-
-    <div class="x3">
-        <div class="cloud"></div>
-    </div>
-
-    <div class="x4">
-        <div class="cloud"></div>
-    </div>
-
-    <div class="x5">
-        <div class="cloud"></div>
-    </div>
-</div>
+      {% if response["openweathermap"]["weather"] == "Snow" %}
+        {% include 'style_snow.html' %}
+      {% elif response["openweathermap"]["weather"] == "Rain" or "Drizzle" %}
+        {% include 'style_rain.html' %}
+      {% else %}
+        {% include 'style_clouds.html' %}
+      {% endif %}
+  
 
 <div class="text-container">
-
   {% for item in response["openweathermap"] %}
-  <h2>{{ item | capitalize }}: {{ response["openweathermap"][item] }}</h2>
+    {% if item != 'source' %}
+      <h2>{{ item | capitalize }}: {{ response["openweathermap"][item] }}</h2>
+    {% else %}
+     <h2>{{ item | capitalize }}: </h2> <a href= 'https://openweathermap.org/api'><h2>{{ response["openweathermap"][item] }}</h2></a>
+    {% endif %}
   {% endfor %}
-
 </div>
 
 <div class="text-container">
   {% for item in response["weatherbit"] %}
-  <h2>{{ item | capitalize }}: {{ response["weatherbit"][item] }}</h2>
+    {% if item != 'source' %}
+      <h2>{{ item | capitalize }}: {{ response["weatherbit"][item] }}</h2>
+    {% else %}
+      <h2>{{ item | capitalize }}: </h2> <a href='https://www.weatherbit.io/'><h2>{{ response["weatherbit"][item] }}</h2></a>
+    {% endif %}
   {% endfor %}
 </div>
 

@@ -46,18 +46,18 @@ def index_page():
 @app.post("/api", response_class=HTMLResponse)
 def data_from_frontend_form(request: Request, city: str = Form(...)):
     """Позволяет получить данные с помощью запроса из формы"""
-    try:
-        response = get_data_from_weather_api(city)
-        print(response)
-        post_request_sender(response)
+    # try:
+    response = get_data_from_weather_api(city)
+    print(response)
+    post_request_sender(response)
 
-        return TEMPLATES.TemplateResponse("weather.html", {
-            "request": request,
-            "response": response
-        })
+    return TEMPLATES.TemplateResponse("weather.html", {
+        "request": request,
+        "response": response
+    })
 
-    except KeyError:
-        return Response("<h1>Incorrect city name</h1>", media_type='text/html')
+    # except KeyError:
+    #     return Response("<h1>Incorrect city name</h1>", media_type='text/html')
 
 
 @app.get("/api/{city}")
@@ -68,6 +68,7 @@ def api_response(city: str):
         print(response)
         post_request_sender(response)
         return Response(json.dumps(response), media_type='text/html')
+
     except KeyError:
         return Response("<h1>Incorrect city name</h1>", media_type='text/html')
 

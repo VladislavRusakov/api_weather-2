@@ -1,0 +1,165 @@
+<style>
+    body, html {
+        height: 100%;
+        background-color: #5788b3;
+        overflow-x: hidden;
+        padding: 0;
+        margin: 0;
+      }
+      
+      body:before {
+        display: block;
+        position: absolute;
+        right: 20%;
+        top: 10%;
+      }
+      
+      .snowfield {
+        position: fixed;
+        width: 100%;
+        animation-name: falling;
+        animation-iteration-count: infinite;
+        animation-timing-function: ease-in-out;
+      }
+      
+      /* font-size is the weight of a flake.
+       * The heavier it is the faster it falls!
+       */
+      
+      ._160.snowfield {
+        font-size: 200%;
+        animation-duration: 15s;
+      }
+      ._150.snowfield {
+        font-size: 150%;
+        animation-duration: 25s;
+      }
+      ._130.snowfield {
+        font-size: 130%;
+        animation-duration: 35s;
+      }
+      ._100.snowfield {
+        font-size: 100%;
+        animation-duration: 55s;
+      }
+      ._90.snowfield {
+        font-size: 90%;
+        animation-duration: 105s;
+      }
+      
+      .snowfield > p:nth-of-type(1) { animation-duration: 11; }
+      .snowfield > p:nth-of-type(2) { animation-duration: 44; }
+      .snowfield > p:nth-of-type(3) { animation-duration: 55; }
+      .snowfield > p:nth-of-type(4) { animation-duration: 18s; }
+      .snowfield > p:nth-of-type(5) { animation-duration: 44s; }
+      
+      .snowfield > p {
+        position: relative;
+        display: inline-block;
+        text-shadow: 0px 0px 2px white;
+        color: transparent;
+        margin-right: 14%;
+        animation-name: waving;
+        animation-iteration-count: infinite;
+        animation-timing-function: linear;
+      }
+      
+      .snowfield > p:after {
+        content: '.';
+        position: relative;
+        top: 20em;
+        text-shadow: 0px 0px 2px white;
+        color: transparent;
+        animation-name: waving;
+        animation-iteration-count: infinite;
+        animation-timing-function: linear;
+      }
+      
+      .snowfield > p:before {
+        content: '.';
+        text-overflow: clip;
+        position: relative;
+        top: 40em;
+        text-shadow: 0px 0px 2px white;
+        color: transparent;
+        animation-name: waving;
+        animation-iteration-count: infinite;
+        animation-timing-function: linear;
+      }
+      
+      @keyframes waving {
+        0% {
+          margin-left: inherit;
+          margin-right: inherit;
+        }
+        25% {
+          margin-left: 25%;
+          margin-right: 15%;
+        }
+        50% {
+          margin-left: 25%;
+          margin-right: 15%;
+        }
+        75% {
+          margin-left: 25%;
+          margin-right: 15%;
+        }
+        100% {
+          margin-left: inherit;
+          margin-right: inherit;
+        }  
+      }
+      
+      @keyframes falling {
+        0% {
+          top: -50%;
+          margin-left: 0;
+          margin-right: 0;
+        }
+        25% {
+          margin-left: 25%;
+          margin-right: 10%;
+        }
+        50% {
+          margin-left: 10%;
+          margin-right: 25%;
+        }
+        75% {
+          margin-left: 25%;
+          margin-right: 10%;
+        }
+        100% {
+          margin-left: inherit;
+          margin-right: inherit;
+          top: 100%;
+        }
+      }
+      
+        .text-container {
+            max-width: 700px;
+            border: double rgba(255, 255, 255, .5);
+            margin-left: 20%;
+            margin-top: 2%;
+            overflow: hidden;
+        }
+            
+        h2 {
+            margin-left: 10px;
+            font-family: monospace;
+        }
+  </style>
+
+</head>
+
+
+<body>
+    <div class="_150 snowfield"><p>.</p><p>.</p><p>.</p><p>.</p><p>.</p>
+    </div>
+      <div class="_130 snowfield"><p>.</p><p>.</p><p>.</p><p>.</p><p>.</p>
+    </div>
+        <div class="_90 snowfield"><p>.</p><p>.</p><p>.</p><p>.</p><p>.</p>
+    </div>
+      <div class="_160 snowfield"><p>.</p><p>.</p><p>.</p><p>.</p><p>.</p>
+    </div>
+      <div class="_100 snowfield"><p>.</p><p>.</p><p>.</p><p>.</p><p>.</p>
+    </div>

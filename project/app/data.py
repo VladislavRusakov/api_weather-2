@@ -25,15 +25,21 @@ def get_data_from_weather_api(
         "units": "metric",
         })
 
+    print("+++++++++++++++++++++++++++++++++++++++++++++++++")
+    print(response.json()['weather'][0]['main'])
+
     if mode != "normal":
         return response.status_code
 
+    """Здесь словарь data создаётся
+    Добавляется ответ с первого ресурса"""
     data = {'openweathermap': {
             'name': response.json()['name'],
             'timezone': response.json()['timezone'],
             'lon': response.json()['coord']['lon'],
             'lat': response.json()['coord']['lat'],
             'temperature': response.json()['main']['temp'],
+            'weather': response.json()['weather'][0]['main'],
             'source': url
             }}
 
@@ -44,12 +50,15 @@ def get_data_from_weather_api(
         "key": appid2,
     })
 
+    """Здесь словарь data расширяется
+    Добавляется ответ с второго ресурса"""
     data["weatherbit"] = {
         'name': response.json()['data'][0]['city_name'],
         'timezone': response.json()['data'][0]['timezone'],
         'lon': response.json()['data'][0]['lon'],
         'lat': response.json()['data'][0]['lat'],
         'temperature': response.json()['data'][0]['temp'],
+        'weather': response.json()['data'][0]['weather']['description'],
         'source': url
     }
 
