@@ -1,5 +1,6 @@
 <html>
   <head>
+    <title>{{ response["openweathermap"]["name"] | capitalize }}</title>
 
       {% if response["openweathermap"]["weather"] == "Snow" %}
         {% include 'style_snow.html' %}
@@ -15,8 +16,9 @@
         
       {% endif %}
   
-
 <div class="text-container">
+  
+
   {% for item in response["openweathermap"] %}
     {% if item != 'source' %}
       <h2>{{ item | capitalize }}: {{ response["openweathermap"][item] }}</h2>
@@ -36,5 +38,6 @@
   {% endfor %}
 </div>
 
+{% include "style_raindrops.html" %}
 </body>
 </html>
