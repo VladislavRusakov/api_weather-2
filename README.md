@@ -1,3 +1,0 @@
-Сборка - docker-compose up -d --build Удаление - docker-compose down -v
-
-Ссылка: https://api.openweathermap.org/data/2.5/weather?q=moscow&appid=*YOUR_API_KEY*&units=metric ПОСТ запрос: curl -d '{"source":"openweathermap", "city":"moscow", "temp":2.04, "timezone":10800, "lon":37.6156, "lat":55.7522, "request":"http://localhost:8000/api/moscow"}' -H "Content-Type: application/json" -X POST http://localhost:8000/db
